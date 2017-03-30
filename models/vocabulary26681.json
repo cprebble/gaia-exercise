@@ -1,0 +1,58 @@
+{
+  "currentPage": 0,
+  "totalCount": 4,
+  "terms": [
+    {
+      "tid": "26686",
+      "vid": "1",
+      "name": "Documentaries",
+      "description": "",
+      "weight": "0",
+      "isLeaf": true,
+      "term_image": {},
+      "termImages": {
+        "splash": {},
+        "splashCustom": {}
+      }
+    },
+    {
+      "tid": "26691",
+      "vid": "1",
+      "name": "Films",
+      "description": "",
+      "weight": "1",
+      "isLeaf": true,
+      "term_image": {},
+      "termImages": {
+        "splash": {},
+        "splashCustom": {}
+      }
+    },
+    {
+      "tid": "26696",
+      "vid": "1",
+      "name": "TV Series",
+      "description": "",
+      "weight": "2",
+      "isLeaf": true,
+      "term_image": {},
+      "termImages": {
+        "splash": {},
+        "splashCustom": {}
+      }
+    },
+    {
+      "tid": "26701",
+      "vid": "1",
+      "name": "Shorts",
+      "description": "",
+      "weight": "3",
+      "isLeaf": true,
+      "term_image": {},
+      "termImages": {
+        "splash": {},
+        "splashCustom": {}
+      }
+    }
+  ]
+}

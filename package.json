@@ -2,9 +2,10 @@
   "name": "gaia-exercise",
   "version": "1.0.0",
   "private": true,
+  "main": "server.js",
   "scripts": {
     "lint" : "./node_modules/eslint/bin/eslint.js .",
-    "start": "gulp && node server.js",
+    "start": "node server.js",
     "test": "tests/server-tests/run-server-tests.sh"
   },
   "eslintConfig": {

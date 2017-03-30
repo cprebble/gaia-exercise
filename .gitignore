@@ -3,4 +3,5 @@ node_modules/
 dist/
 logs/
 tests/**/*.xml
+.vscode
 

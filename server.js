@@ -41,12 +41,9 @@ const startServer = function(obj) {
     app.settings.port = port;
 
 
-    app.get("/", function(req, res, next) {
-        return res.send("Hello")
-    })
-
-    const mediaRoutes = require(path.join(__dirname, 'routes', 'MediaRoutes'));
-    mediaRoutes(app);
+    const controllers = require(path.join(__dirname, 'controllers', 'Index'));
+    controllers(app);
+    
 
     if (process.env.NODE_ENV === 'development') {
         // only use in development
