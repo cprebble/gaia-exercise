@@ -34,14 +34,14 @@ const startServer = function(obj) {
     
     console.log("Starting server...");
 
-    logger = require(path.join(__dirname, 'helpers', 'Logger'))(app, cfg);
+    logger = require(path.join(__dirname, 'helpers', 'logger'))(app, cfg);
 
     app.settings.logger = logger;
     app.settings.cfg = cfg;
     app.settings.port = port;
 
 
-    const controllers = require(path.join(__dirname, 'controllers', 'Index'));
+    const controllers = require(path.join(__dirname, 'controllers', 'index'));
     controllers(app);
     
 

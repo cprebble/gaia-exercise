@@ -10,7 +10,7 @@ const path = require("path"),
 
 
 // logger for logging all the routes, expressjs middleware logger
-const connectLogger = require(path.join(__dirname, 'ConnectLogger'));
+const connectLogger = require(path.join(__dirname, 'connect-logger'));
 
 
 function makeLogger (cfg) {
