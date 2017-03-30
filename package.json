@@ -1,0 +1,47 @@
+{
+  "name": "gaia-exercise",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "lint" : "./node_modules/eslint/bin/eslint.js .",
+    "start": "gulp && node server.js",
+    "test": "tests/server-tests/run-server-tests.sh"
+  },
+  "eslintConfig": {
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module"
+        
+    },
+    "env": {
+        "node": true
+    }
+  },
+  "dependencies": {
+    "bunyan": "1.8.5",
+    "compression": "1.6.1",
+    "connect-timeout": "1.7.0",
+    "errorhandler": "1.4.3",
+    "express": "4.13.4",
+    "express-unless": "0.3.0",
+    "formidable": "1.0.17",
+    "fs-extra": "1.0.0",
+    "lazy.js": "0.4.2",
+    "nconf": "0.8.4",
+    "request": "2.70.0",
+    "request-promise":"4.2.0"
+  },
+  "devDependencies": {
+    "chai": "3.5.0",
+    "eslint": "3.18.0",
+    "eslint-config-standard": "7.1.0",
+    "eslint-plugin-markdown": "1.0.0-beta.4",
+    "eslint-plugin-promise": "3.5.0",
+    "eslint-plugin-standard": "2.1.1",
+    "gulp": "3.9.1",
+    "mocha": "2.4.5",
+    "rewire": "2.5.1",
+    "run-sequence": "1.1.5",
+    "sinon": "1.17.4"
+  }
+}
