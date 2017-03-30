@@ -7,18 +7,17 @@ var rewire = require("rewire"),
   assert = require("assert"),
   path = require('path');
 
-suite('date_tests');
+suite('media_routes_tests');
 
-test('isDate_iso_test', function(){
+test('media_routes_test', function(){
   // rewire acts exactly like require.
-  var myModule = rewire("../../mainutil/util.js");
+  var myModule = rewire("../../../src/controllers/media-routes.js");
 
   //var isDate = function(datestr)
-  var methodUnderTest = myModule.__get__('isDate');
-  var testdatestr = "2016-02-20T00:00:00.000Z";
+  var methodUnderTest = myModule.__get__('longestPreviewMediaUrl');
 
-  var bdate = methodUnderTest(testdatestr);
-  assert.ok(bdate, testdatestr + " should be a recognized as a date");
+  var bdate = methodUnderTest("req", "res", "next");
+  assert.ok(methodUnderTest, "media_routes_test should be a recognized");
 });
 
 

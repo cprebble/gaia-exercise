@@ -5,5 +5,4 @@ const Controllers = (serverApp) => {
 	MediaRoutes(serverApp);
 }
 
-
 module.exports = Controllers;

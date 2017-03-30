@@ -9,7 +9,7 @@ const express = require('express'),
     fs = require('fs-extra'),
     os = require('os');
 
-const cfg = require('./config');
+const cfg = require(path.join(__dirname, "config"));
 
 const port = (process.env.PORT || 3000),
     oneDay = 86400000; // millisecs

@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "lint" : "./node_modules/eslint/bin/eslint.js .",
-    "start": "node server.js",
-    "test": "tests/server-tests/run-server-tests.sh"
+    "start": "node src/server.js",
+    "test": "tests/unit/run-unit-tests.sh"
   },
   "eslintConfig": {
     "parserOptions": {
