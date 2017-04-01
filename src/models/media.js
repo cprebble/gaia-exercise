@@ -10,7 +10,7 @@ class Media {
 
     	let mUrl = util.subParam(mediaUrl, previewNid); //eg. "http://d6api.gaia.com/media/136191"
         // this.logger.info({methodName: "getBCHLS", args: arguments}, mUrl);
-		return util.importfeed(mUrl)
+		return util.importFeed(mUrl)
             .then((data) => {
 // console.log("getBCHLS", mUrl, "\n", data)
                 let lastModified = data.headers["last-modified"],

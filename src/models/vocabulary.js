@@ -10,7 +10,7 @@ class Vocabulary {
 
     	let voUrl = util.subParam(vocabularyUrl, initialTid); //eg. "http://d6api.gaia.com/vocabulary/1/26681"
         // this.logger.info({methodName: "getVocabularyAtIndex", args: arguments}, voUrl);
-		return util.importfeed(voUrl)
+		return util.importFeed(voUrl)
             .then((data) => {
                 let lastModified = data.headers["last-modified"],
                     jdata = JSON.parse(data.body);

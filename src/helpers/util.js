@@ -1,7 +1,7 @@
 
 const ireqp = require("request-promise");
 
-function importfeed (feedurl) {
+function importFeed (feedurl) {
     let opts = {
     	url: feedurl,
     	headers: {
@@ -28,6 +28,6 @@ function subParam(subThisUrl, withThisValue) {
 
 
 module.exports = {
-  importfeed: importfeed,
+  importFeed: importFeed,
   subParam: subParam
 };

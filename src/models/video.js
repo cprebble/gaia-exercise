@@ -23,12 +23,12 @@ class Video {
 
     	let viUrl = util.subParam(videosUrl, titleNid); //eg. "http://d6api.gaia.com/videos/term/26686"
         // this.logger.info({methodName: "findPreviewWithLongestDuration", args: arguments}, viUrl);
-		return util.importfeed(viUrl)
+		return util.importFeed(viUrl)
             .then((data) => {
-
+debugger;
                 let lastModified = data.headers["last-modified"],
                     jdata = JSON.parse(data.body);
-debugger;
+
                 let sortedTitles = this.sortTitlesBackwardsByPreviewDuration(jdata.titles),
                     previewObj = sortedTitles[0].preview;
 
