@@ -1,13 +1,13 @@
 
 'use strict';
 
-
 const express = require('express'),
     path = require('path'),
     errorhandler = require('errorhandler'),
     compression = require('compression'),
     fs = require('fs-extra'),
-    os = require('os');
+    os = require('os'), 
+    hbs = require('hbs');
 
 const cfg = require(path.join(__dirname, "config"));
 
@@ -17,9 +17,18 @@ const port = (process.env.PORT || 3000),
 const logdir = "logs";
 fs.ensureDirSync(logdir);
 
-let logger;
 
 const app = express();
+
+app.engine('html', hbs.__express);
+hbs.registerHelper('__', function(locale, msg) {
+  return new hbs.SafeString(translators[locale].t(msg));
+});
+
+app.set('view engine', 'html');
+app.set('views', path.join(__dirname, 'views'));
+
+
 app.use(function (req, res, next) {
     //no caching
     res.setHeader('Cache-Control', 'private, max-age=0, no-cache, no-store');
@@ -34,17 +43,15 @@ const startServer = function(obj) {
     
     console.log("Starting server...");
 
-    logger = require(path.join(__dirname, 'helpers', 'logger'))(app, cfg);
+    const logger = require(path.join(__dirname, 'helpers', 'logger'))(app, cfg);
 
     app.settings.logger = logger;
     app.settings.cfg = cfg;
     app.settings.port = port;
 
-
     const controllers = require(path.join(__dirname, 'controllers', 'index'));
     controllers(app);
     
-
     if (process.env.NODE_ENV === 'development') {
         // only use in development
         app.use(errorhandler({ dumpExceptions: true, showStack: true }));
@@ -77,6 +84,12 @@ process.on('SIGTERM',function(){
 
 //catches uncaught exceptions
 process.on('uncaughtException', function(err) {
+  console.error("UNCAUGHT EXCEPTION", err.stack);
+  exitHandler(err);
+});
+
+process.on('unhandledRejection', function(err, promise) {
+  console.error("UNHANDLED REJECTION", err.stack);
   exitHandler(err);
 });
 

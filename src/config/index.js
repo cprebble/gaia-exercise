@@ -50,10 +50,7 @@ let startup = nconf
 
 let cfg = nconf.get();
 
-//// make a convenience credentials object
-//cfg.credentials = {"accessKeyId": cfg.AWS_ACCESS_KEY_ID, "secretAccessKey": cfg.AWS_SECRET_ACCESS_KEY};
-
-//console.log("\nconfig/index cfg: ", cfg, JSON.stringify(nconf));
+// console.log("\nconfig/index cfg: ", cfg, JSON.stringify(nconf));
 module.exports = cfg;
 
 

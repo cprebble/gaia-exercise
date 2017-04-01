@@ -1,5 +1,5 @@
 
-let DEFAULT_FIELDS = ["url","method","status","responseTime","contentLength","reqheaders","remoteAddress","username","env","client","params"];
+let DEFAULT_FIELDS = ["url","method","status","responseTime","contentLength","reqheaders","remoteAddress","params"];
 let path = require('path');
 
 function getLogger(logger, options) {
@@ -9,7 +9,6 @@ function getLogger(logger, options) {
   , fmtfields = options.loggerFields || DEFAULT_FIELDS;
 
   return function (req, res, next) {
-
 			let start = new Date()
 			, statusCode
 			, writeHead = res.writeHead
@@ -34,7 +33,7 @@ function getLogger(logger, options) {
 				res.end(chunk, encoding);
 				res.responseTime = new Date() - start;
 
-				//thislogger.debug({req:format(fmtfields, req, res)}, "Expressjs request");
+				thislogger.debug({req:format(fmtfields, req, res)}, "Expressjs request");
 
 			};
 
@@ -112,18 +111,13 @@ function format(fields, req, res) {
       case 'reqheaders':
         rtnobj.headers = reqheaderSerializer(req.headers);
         break;
-      // case 'username':
-      //   rtnobj.username = req[util.JWT_USER_PROPERTY] && req[util.JWT_USER_PROPERTY].username;
-      //   break;
-      case 'client':
-        rtnobj.client = JSON.stringify(req.app.settings.client);
-        break;
       case 'params':
         rtnobj.params = req.params;
         break;
 
       default:
-        throw new Error('Unknown encoding')
+        //throw new Error('Unknown url field')
+        // don't record -noop
     };
   }
   return rtnobj;

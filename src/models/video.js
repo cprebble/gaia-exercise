@@ -5,16 +5,34 @@ const path = require("path"),
 class Video {
     constructor(app) {
         this.logger = app.settings.logger;
-        
+    }
+
+    previewDuration (titleObj) {
+        let duration = 0;
+        if (titleObj.preview && titleObj.preview.duration) {
+            duration = parseInt(titleObj.preview.duration, 10);
+        }
+        return  duration;
+    }
+
+    sortTitlesBackwardsByPreviewDuration (titles) {
+        return lazy(titles).sortBy(this.previewDuration, true).toArray();
     }
 
     findPreviewWithLongestDuration (videosUrl, titleNid) {
 
     	let viUrl = util.subParam(videosUrl, titleNid); //eg. "http://d6api.gaia.com/videos/term/26686"
+        // this.logger.info({methodName: "findPreviewWithLongestDuration", args: arguments}, viUrl);
 		return util.importfeed(viUrl)
-            .then((vstr) => {
-                let jdata = JSON.parse(vstr);
-		        return jdata.titles[2].preview;
+            .then((data) => {
+
+                let lastModified = data.headers["last-modified"],
+                    jdata = JSON.parse(data.body);
+debugger;
+                let sortedTitles = this.sortTitlesBackwardsByPreviewDuration(jdata.titles),
+                    previewObj = sortedTitles[0].preview;
+
+		        return {lastModified: lastModified, data: previewObj};
             })
             .catch((err)=> {
                 return err;

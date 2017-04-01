@@ -6,9 +6,18 @@ function importfeed (feedurl) {
     	url: feedurl,
     	headers: {
     		"Accept": "application/json"
-    	}
+    	},
+		resolveWithFullResponse: true
     }
-    return ireqp(opts);
+
+	return ireqp(opts)
+		.then((response) => {
+// console.log("\nutil.importfeed: ", feedurl, "\n", response.headers, "\n")
+			return {headers: response.headers, body: response.body};
+		})
+		.catch((err) => {
+			return err;
+		});
 }
 
 

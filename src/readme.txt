@@ -9,6 +9,9 @@ markdown readme - instructions about making image, and about running container w
 variable inputs
 comments
 error handling
+http headers and status codes
+pm2
+upgrade npm packages
 
 unit tests - strictly the code in this project
 integration tests - fetching and testing data output
@@ -16,6 +19,8 @@ code coverage - istanbul
 test sans wifi
 test rotating logs
 test too-long running request
+test request with different content-type header (like html), and no header (400 bad request)
+test logger levels
 
 
 

@@ -55,7 +55,7 @@ function makeLogger (cfg) {
 	const alogger = bunyan.createLogger({
 		name: "gaia-exercise",
 		src: true,
-    level: cfg.logLevel,
+    	level: cfg.logLevel,
 		streams: loggerStreams,
 	  serializers: bunyan.stdSerializers
 	});
