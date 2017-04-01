@@ -4,8 +4,8 @@ const sinon = require("sinon"),
   path = require("path"),
   util = require(path.join(__dirname, "..", "..", "..", "src", "helpers", "util"));
 
-const assert = chai.assert,
-  expect = chai.expect;
+chai.should();
+chai.use(sinonChai);
 
 let sandbox = sinon.sandbox.create();
 
@@ -31,21 +31,61 @@ describe("Video", function () {
     //util.importfeed(viUrl).then((data) => {
     const video = new Video({settings: {logger: {}}})
 
-    let url = "http://hi/there"
+    let testUrlX = "http://hi/there/{tid}",
+      testUrl = "http://hi/there/1234";
+    let testData = {
+      headers: {jump: "up"}, 
+      body: '{"titles": [{"preview":{"nid": 1234, "duration": "12"}}]}'
+    };
     
-    sandbox.stub(util, "subParam").returns(url);
-    sandbox.stub(util, "importFeed").returns(Promise.resolve({headers: {jump: "up"}, body: "{}"}));
+    let spSpy = sandbox.spy(util, "subParam");
+    sandbox.stub(util, "importFeed").returns(Promise.resolve(testData));
 
-    video.findPreviewWithLongestDuration("oh/my", 1234)
+    video.findPreviewWithLongestDuration(testUrlX, 1234)
       .then((data) => {
-  
-        assert.isOk(data, "everything is ok");
+        
+        chai.assert.isOk(data, "everything is ok");
   console.log("returned:", data)
         // assert.equal(data.headers.jump, "up", "== coerces values to strings");
 
       })
-    sinon.assert.calledOnce(util.subParam)
-    sinon.assert.calledOnce(util.importFeed)
+console.log("asserting")
+    sinon.assert.calledOnce(util.subParam);
+    spSpy.should.have.been.calledWithExactly(testUrlX, 1234);
+    
+    sinon.assert.calledOnce(util.importFeed);
+
+  })
+
+  it('fetches data2', function() {
+
+    //subParam(videosUrl, titleNid)
+    //util.importfeed(viUrl).then((data) => {
+    const video = new Video({settings: {logger: {}}})
+
+    let testUrlX = "http://hello/{tid}",
+      testUrl = "http://hello/1234";
+    let testData = {
+      headers: {jump: "over"}, 
+      body: '{"titles": [{"preview":{"nid": 9876, "duration": "12"}}]}'
+    };
+    
+    let spSpy = sandbox.spy(util, "subParam");
+    sandbox.stub(util, "importFeed").returns(Promise.resolve(testData));
+
+    video.findPreviewWithLongestDuration(testUrlX, 9876)
+      .then((data) => {
+        
+        chai.assert.isOk(data, "everything is ok");
+  console.log("returned:", data)
+        // assert.equal(data.headers.jump, "up", "== coerces values to strings");
+
+      })
+console.log("asserting")
+    sinon.assert.calledOnce(util.subParam);
+    spSpy.should.have.been.calledWithExactly(testUrlX, 9876);
+    
+    sinon.assert.calledOnce(util.importFeed);
 
   })
 
