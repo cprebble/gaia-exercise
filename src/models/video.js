@@ -35,7 +35,7 @@ debugger;
 		        return {lastModified: lastModified, data: previewObj};
             })
             .catch((err)=> {
-                return err;
+                throw err;
             });
 
     }

@@ -24,10 +24,9 @@ function makeLogger (cfg) {
 
 		switch (cfgstream) {
           
-          case "rotatingfile": //"id":"rotatingfile","logRotatePeriod":"1h","logRotateBackcopies":3
+          case "rotatingFile": //"id":"rotatingfile","logRotatePeriod":"1h","logRotateBackcopies":3
           	sstream.period = cfg.logRotatePeriod || "1d";
           	sstream.count = parseInt(cfg.logRotateBackcopies,10) || 3;
-          	//sstream.path = cfgstream.filepath || "./logfile" + ".log";
           	sstream.path = "./logs/log-" + os.hostname() + "-" + ".log";
             break;
 

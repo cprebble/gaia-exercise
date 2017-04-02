@@ -19,7 +19,7 @@ class Media {
 
             })
             .catch((err)=> {
-                return err;
+                throw err;
             });
 
     }

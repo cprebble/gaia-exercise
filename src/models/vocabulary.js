@@ -17,7 +17,7 @@ class Vocabulary {
 		        return {lastModified: lastModified, data: jdata.terms[vocabIndex]};
             })
             .catch((err)=> {
-                return err;
+                throw err;
             });
 
     }

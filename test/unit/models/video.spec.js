@@ -27,8 +27,8 @@ describe("Video", function () {
 
   it('fetches data', function() {
 
-    //subParam(videosUrl, titleNid)
-    //util.importfeed(viUrl).then((data) => {
+    //util.subParam(videosUrl, titleNid)
+    //util.importfeed(viUrl).then((data) => { ...
     const video = new Video({settings: {logger: {}}})
 
     let testUrlX = "http://hi/there/{tid}",

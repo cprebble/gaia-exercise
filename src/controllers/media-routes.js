@@ -133,8 +133,8 @@ const longestPreviewMediaUrl = (req, res, next) => {
 		})
 		.catch((err) => {
 			console.log(err); 	// for easier parsing by humans in dev
-			logger.error(err);  // for parsing/filtering by say Kibana on log level, etc
-			return res.send(err);
+			logger.error(err);  // for parsing/filtering by say Kibana, on log level, method, etc
+			return res.end("Error: " + err);
 		});
 
 }
