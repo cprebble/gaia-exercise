@@ -41,9 +41,8 @@ app.use(compression());
 
 const startServer = function(obj) {
     
-    console.log("Starting server...");
-
     const logger = require(path.join(__dirname, 'helpers', 'logger'))(app, cfg);
+    logger.info("Starting server...");
 
     app.settings.logger = logger;
     app.settings.cfg = cfg;
@@ -58,8 +57,8 @@ const startServer = function(obj) {
     }
 
     app.listen(port);
-    logger.info({},
-        'Started server at ' + os.hostname() + ':' + port);
+    const startMsg = "Started server at " + os.hostname() + ":" + port;
+    logger.info(startMsg);
 
 };
 
@@ -69,30 +68,29 @@ const exitHandler = function(err) {
 };
 
 //do something when app is closing
-process.on('exit', function() {
+process.on("exit", function() {
   exitHandler();
 });
 
 //catches ctrl+c event
-process.on('SIGINT', function() {
+process.on("SIGINT", function() {
   exitHandler();
 });
 
-process.on('SIGTERM',function(){
+process.on("SIGTERM",function(){
     exitHandler();
 });
 
 //catches uncaught exceptions
-process.on('uncaughtException', function(err) {
+process.on("uncaughtException", function(err) {
   console.error("UNCAUGHT EXCEPTION", err.stack);
   exitHandler(err);
 });
 
-process.on('unhandledRejection', function(err, promise) {
+process.on("unhandledRejection", function(err, promise) {
   console.error("UNHANDLED REJECTION", err.stack);
   exitHandler(err);
 });
-
 
 startServer(cfg);
 

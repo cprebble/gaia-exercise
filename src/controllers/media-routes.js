@@ -75,19 +75,17 @@ const longestPreviewMediaUrl = (req, res, next) => {
 			lastModified = vocabObj.lastModified;
 			titleNid = vocabObj.data.tid;
 			return videos.findPreviewWithLongestDuration(videosUrl, titleNid);
+
 		})
 		.then((previewObj) => {
 			lastModified = lastestLastModified(lastModified, previewObj.lastModified);
 			previewNid = previewObj.data.nid;
 			previewDuration = previewObj.data.duration;
-	console.log("\npreviewObj:", previewObj)
 			return media.getBCHLS(mediaUrl, previewNid);
 
 		})
 		.then((bchlsData) => {
-// console.log("\nbcHLS", bchlsData)
 		 	lastModified = lastestLastModified(lastModified, bchlsData.lastModified);
-
 			let rtnobj = {
 				bcHLS: bchlsData.data,
 				titleNid: titleNid,
@@ -134,7 +132,7 @@ const longestPreviewMediaUrl = (req, res, next) => {
 		.catch((err) => {
 			console.log(err); 	// for easier parsing by humans in dev
 			logger.error(err);  // for parsing/filtering by say Kibana, on log level, method, etc
-			return res.end("Error: " + err);
+			return res.status(500).end("Error: " + err);
 		});
 
 }
