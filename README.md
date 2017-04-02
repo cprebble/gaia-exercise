@@ -4,7 +4,7 @@ A NodeJS project that exposes a RESTful endpoint that returns preview video data
 
 ## Solution Description
 
-How to run this solution: (given NodeJS, NPM and Docker are installed)
+How to run this solution: (given NodeJS, NPM, Docker are installed)
 
 + clone repo
 + run ```npm install```
@@ -12,7 +12,6 @@ How to run this solution: (given NodeJS, NPM and Docker are installed)
 + in a browser navigate to http://_server:port_/terms/26681/longest-preview-media-url
 
 To make a Docker image:
-+ run ```gulp dist```
 + run 
 
 To run Docker container:

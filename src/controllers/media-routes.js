@@ -1,15 +1,13 @@
 
-const path = require("path"),
-	moment = require("moment"),
-	timeouts = require(path.join(__dirname, "..", "middlewares", "timeouts")),
-	util = require(path.join(__dirname, "..", "helpers", "util"));
+const path = require("path");
+const moment = require("moment");
+const timeouts = require(path.join(__dirname, "..", "middlewares", "timeouts"));
+const util = require(path.join(__dirname, "..", "helpers", "util"));
 
-const subParam = util.subParam,
-	importfeed = util.importfeed;
 
-const Vocabulary = require(path.join(__dirname, "..", "models", "Vocabulary")),
-	Video = require(path.join(__dirname, "..", "models", "Video")),
-	Media = require(path.join(__dirname, "..", "models", "Media"));
+const Vocabulary = require(path.join(__dirname, "..", "models", "Vocabulary"));
+const Video = require(path.join(__dirname, "..", "models", "Video"));
+const Media = require(path.join(__dirname, "..", "models", "Media"));
 
 let logger, vocabulary, videos, media;
 

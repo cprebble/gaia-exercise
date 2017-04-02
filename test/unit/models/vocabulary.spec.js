@@ -9,28 +9,28 @@ chai.use(sinonChai);
 
 let sandbox = sinon.sandbox.create();
 
-let Media = require(path.join(__dirname, "..", "..", "..", "src", "models", "media"));
+let Vocabulary = require(path.join(__dirname, "..", "..", "..", "src", "models", "vocabulary"));
 
 
-describe("Media model", function () {
+describe("Vocabulary model", function () {
 
   afterEach(function () {
       // completely restore all fakes created through the sandbox
       sandbox.restore();
   })
 
-  it('finds bcHLS', function() {
+  it('finds first term', function() {
 
-    const testUrlX = "http://somelink/{tid}";
-    const testId = 1234;
-    const resolvedUrl = "http://somelink/" + testId;
-    const testLastModified = "Sun, 02 Apr 2017 14:25:07 +0000";
-    const testBCHLS = "http://mytestbchls/etc";
+    const testUrlX = "http://somelink/{tid}",
+      testId = 1234,
+      resolvedUrl = "http://somelink/" + testId,
+      testLastModified = "Sun, 02 Apr 2017 14:25:07 +0000";
 
     const testBody = {
-      "mediaUrls": {
-          "bcHLS": testBCHLS
-      }
+      "terms": [
+        {"tid": "26686", "name": "Documentaries"},
+        {"tid": "26691", "name": "Films"}
+        ]
     };
 
     const testData = {
@@ -41,17 +41,17 @@ describe("Media model", function () {
     const spSpy = sandbox.spy(util, "subParam");
     sandbox.stub(util, "importFeed").returns(Promise.resolve(testData));
 
-    const media = new Media({settings: {logger: {
+    const vocabulary = new Vocabulary({settings: {logger: {
       info: function(args) {} // stub logger
     }}});
 
-    media.getBCHLS (testUrlX, testId)
-      .then((bcHLSData) => {
-        chai.assert.isOk(bcHLSData, "bcHLSData is not ok");
-        chai.assert.isOk(bcHLSData.lastModified, "lastModified is not ok");
-        chai.assert.isOk(bcHLSData.data, "bcHLS data is not ok");
-        chai.assert.equal(bcHLSData.lastModified, testLastModified, "lastModified doesn't match");
-        chai.assert.equal(bcHLSData.data, testBCHLS, "bcHLS not found");
+    vocabulary.getVocabularyAtIndex (testUrlX, testId, 0)
+      .then((vdata) => {
+        chai.assert.isOk(vdata, "vdata is not ok");
+        chai.assert.isOk(vdata.lastModified, "lastModified is not ok");
+        chai.assert.isOk(vdata.data, "vdata.data is not ok");
+        chai.assert.equal(vdata.lastModified, testLastModified, "lastModified doesn't match");
+        chai.assert.equal(vdata.data.tid, testBody.terms[0].tid, "first term not found");
         return;
 
       })
@@ -70,20 +70,20 @@ describe("Media model", function () {
 
   it('importFeed throws error', function() {
     
-      const testUrlX = "http://somelink/{tid}";
-      const testId = 1234;
-      const testError = "mytest error";
+      const testUrlX = "http://somelink/{tid}",
+        testId = 1234,
+        testError = "mytest error";
 
       sandbox.stub(util, "subParam");
       sandbox.stub(util, "importFeed").rejects(testError);
 
-      const media = new Media({settings: {logger: {
+      const vocabulary = new Vocabulary({settings: {logger: {
         info: function(args) {} // stub logger
       }}});
 
-      media.getBCHLS (testUrlX, testId)
-        .then((bcHLSData) => {
-          chai.assert.isOk(bcHLSData, "bcHLSData is not ok");
+      vocabulary.getVocabularyAtIndex (testUrlX, testId, 0)
+        .then((vdata) => {
+          chai.assert.isNoOk(vdata, "vdata is ok");
           return;
 
         })

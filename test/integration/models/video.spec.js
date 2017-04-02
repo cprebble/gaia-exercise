@@ -2,14 +2,14 @@ const sinon = require("sinon"),
   chai = require("chai"),
   sinonChai = require("sinon-chai"),
   path = require("path"),
-  util = require(path.join(__dirname, "..", "..", "src", "helpers", "util"));
+  util = require(path.join(__dirname, "..", "..", "..", "src", "helpers", "util"));
 
 chai.should();
 chai.use(sinonChai);
 
 let sandbox = sinon.sandbox.create();
 
-let Video = require(path.join(__dirname, "..", "..", "src", "models", "video"));
+let Video = require(path.join(__dirname, "..", "..", "..", "src", "models", "video"));
 
 
 describe("Video model", function () {
@@ -19,7 +19,9 @@ describe("Video model", function () {
     // actually hits endpoints
     //util.subParam(videosUrl, titleNid)
     //util.importfeed(viUrl).then((data) => { ...
-    const video = new Video({settings: {logger: {}}});
+    const video = new Video({settings: {logger: {
+      info: function(args) {} // stub logger
+    }}});
 
     const videoUrl = "http://d6api.gaia.com/videos/term/{tid}",
         tid = "26686",

@@ -1,18 +1,20 @@
-const sinon = require("sinon");
-const chai = require("chai");
-const sinonChai = require("sinon-chai");
-const path = require("path");
-const util = require(path.join(__dirname, "..", "..", "..", "src", "helpers", "util"));
+const sinon = require("sinon"),
+  chai = require("chai"),
+  sinonChai = require("sinon-chai"),
+  path = require("path"),
+  util = require(path.join(__dirname, "..", "..", "..", "src", "helpers", "util"));
 
 chai.should();
 chai.use(sinonChai);
 
 let sandbox = sinon.sandbox.create();
 
+
+let Vocabulary = require(path.join(__dirname, "..", "..", "..", "src", "models", "vocabulary"));
+let Video = require(path.join(__dirname, "..", "..", "..", "src", "models", "video"));
 let Media = require(path.join(__dirname, "..", "..", "..", "src", "models", "media"));
 
-
-describe("Media model", function () {
+describe("Media Controller", function () {
 
   afterEach(function () {
       // completely restore all fakes created through the sandbox
@@ -21,11 +23,15 @@ describe("Media model", function () {
 
   it('finds bcHLS', function() {
 
-    const testUrlX = "http://somelink/{tid}";
-    const testId = 1234;
-    const resolvedUrl = "http://somelink/" + testId;
-    const testLastModified = "Sun, 02 Apr 2017 14:25:07 +0000";
-    const testBCHLS = "http://mytestbchls/etc";
+    const vocabSpy = sandbox.spy(Vocabulary, "getVocabularyAtIndex");
+    
+
+
+    const testUrlX = "http://somelink/{tid}",
+      testId = 1234,
+      resolvedUrl = "http://somelink/" + testId,
+      testLastModified = "Sun, 02 Apr 2017 14:25:07 +0000",
+      testBCHLS = "http://mytestbchls/etc";
 
     const testBody = {
       "mediaUrls": {
@@ -70,9 +76,9 @@ describe("Media model", function () {
 
   it('importFeed throws error', function() {
     
-      const testUrlX = "http://somelink/{tid}";
-      const testId = 1234;
-      const testError = "mytest error";
+      const testUrlX = "http://somelink/{tid}",
+        testId = 1234,
+        testError = "mytest error";
 
       sandbox.stub(util, "subParam");
       sandbox.stub(util, "importFeed").rejects(testError);

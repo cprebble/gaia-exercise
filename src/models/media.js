@@ -1,5 +1,5 @@
-const path = require("path"),
-	util = require(path.join(__dirname, "..", "helpers", "util"));
+const path = require("path");
+const util = require(path.join(__dirname, "..", "helpers", "util"));
 
 class Media {
     constructor(app) {
@@ -9,10 +9,9 @@ class Media {
     getBCHLS (mediaUrl, previewNid) {
 
     	let mUrl = util.subParam(mediaUrl, previewNid); //eg. "http://d6api.gaia.com/media/136191"
-        // this.logger.info({methodName: "getBCHLS", args: arguments}, mUrl);
+        this.logger.info({methodName: "getBCHLS", args: arguments}, mUrl);
 		return util.importFeed(mUrl)
             .then((data) => {
-// console.log("getBCHLS", mUrl, "\n", data)
                 let lastModified = data.headers["last-modified"],
                     jdata = JSON.parse(data.body);
                 return {lastModified: lastModified, data: jdata.mediaUrls.bcHLS};

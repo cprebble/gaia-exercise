@@ -1,6 +1,6 @@
-const path = require("path"),
-    util = require(path.join(__dirname, "..", "helpers", "util")),
-	lazy = require("lazy.js");
+const path = require("path");
+const util = require(path.join(__dirname, "..", "helpers", "util"));
+const lazy = require("lazy.js");
 
 class Video {
     constructor(app) {
@@ -33,7 +33,7 @@ class Video {
     findPreviewWithLongestDuration (videosUrl, titleNid) {
 
     	let viUrl = util.subParam(videosUrl, titleNid); //eg. "http://d6api.gaia.com/videos/term/26686"
-        // this.logger.info({methodName: "findPreviewWithLongestDuration", args: arguments}, viUrl);
+        this.logger.info({methodName: "findPreviewWithLongestDuration", args: arguments}, viUrl);
 		return util.importFeed(viUrl)
             .then((data) => {
                 let lastModified = data.headers["last-modified"],

@@ -6,18 +6,17 @@
   "main": "src/server.js",
   "author": "Carrie Prebble <cprebble@comcast.net>",
   "scripts": {
-    "lint" : "./node_modules/eslint/bin/eslint.js .; exit 0",
     "start": "node src/server.js",
-    "test": "mocha --recursive test/unit && istanbul cover ...",
+    "test": "mocha --recursive test/unit && istanbul cover _mocha -- --recursive test/unit",
     "test-unit": "mocha --recursive test/unit",
     "test-integration": "mocha --recursive test/integration",
-    "test-coverage": "istanbul cover ..."
+    "test-coverage": "istanbul cover _mocha -- --recursive test/unit",
+    "lint" : "./node_modules/eslint/bin/eslint.js .; exit 0"
   },
   "eslintConfig": {
     "parserOptions": {
         "ecmaVersion": 6,
         "sourceType": "module"
-        
     },
     "env": {
         "node": true
@@ -49,11 +48,7 @@
   "devDependencies": {
     "chai": "3.5.0",
     "eslint": "3.19.0",
-    "eslint-config-standard": "7.1.0",
-    "eslint-plugin-markdown": "1.0.0-beta.4",
     "eslint-plugin-promise": "3.5.0",
-    "eslint-plugin-standard": "2.1.1",
-    "gulp": "3.9.1",
     "istanbul":"0.4.5",
     "mocha": "3.2.0",
     "run-sequence": "1.2.2",
