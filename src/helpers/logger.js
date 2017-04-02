@@ -56,7 +56,7 @@ function makeLogger (cfg) {
 		src: true,
     	level: cfg.logLevel,
 		streams: loggerStreams,
-	  serializers: bunyan.stdSerializers
+	  	serializers: bunyan.stdSerializers
 	});
 
 // 	logger.debug({

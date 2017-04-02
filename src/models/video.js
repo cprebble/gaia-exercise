@@ -15,10 +15,21 @@ class Video {
         return  duration;
     }
 
+    /** 
+     * @description Sort a list of video titles by the duration found on the preview subobject.
+     * @param {array} titles A list of JSON objects from which to search for previews and their duration attribute.  
+     * @return {array} A list sorted in descending order of duration attribute on the preview object.  
+     */
     sortTitlesBackwardsByPreviewDuration (titles) {
         return lazy(titles).sortBy(this.previewDuration, true).toArray();
     }
 
+    /** 
+     * @description Find the preview with the longest duration.
+     * @param {string} videosUrl The url from which to retrieve a list of video objects with previews.  
+     * @param {string} titleNid The id of the video object list.  
+     * @return {object} The preview JSON object with the longest duration.  
+     */ 
     findPreviewWithLongestDuration (videosUrl, titleNid) {
 
     	let viUrl = util.subParam(videosUrl, titleNid); //eg. "http://d6api.gaia.com/videos/term/26686"

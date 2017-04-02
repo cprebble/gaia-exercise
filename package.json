@@ -1,13 +1,17 @@
 {
   "name": "gaia-exercise",
+  "description": "A NodeJS project that exposes a RESTful endpoint that returns preview video data fetched and reduced from multiple Gaia backend points.",
   "version": "1.0.0",
   "private": true,
-  "main": "server.js",
+  "main": "src/server.js",
+  "author": "Carrie Prebble <cprebble@comcast.net>",
   "scripts": {
     "lint" : "./node_modules/eslint/bin/eslint.js .",
     "start": "node src/server.js",
-    "test": "npm run test-unit",
-    "test-unit": "NODE_ENV=test mocha '*.spec.js'"
+    "test": "mocha --recursive test/unit && istanbul cover ...",
+    "test-unit": "mocha --recursive test/unit",
+    "test-integration": "mocha --recursive test/integration",
+    "test-coverage": "istanbul cover ..."
   },
   "eslintConfig": {
     "parserOptions": {
@@ -20,34 +24,33 @@
     }
   },
   "dependencies": {
-    "bunyan": "1.8.5",
-    "compression": "1.6.1",
+    "bunyan": "1.8.9",
+    "compression": "1.6.2",
     "connect":"3.6.0",
-    "connect-timeout": "1.7.0",
+    "connect-timeout": "1.8.0",
     "crypto":"0.0.3",
-    "errorhandler": "1.4.3",
-    "express": "4.13.4",
+    "errorhandler": "1.5.0",
+    "express": "4.15.2",
     "express-unless": "0.3.0",
-    "formidable": "1.0.17",
-    "fs-extra": "1.0.0",
+    "fs-extra": "2.1.2",
     "hbs":"4.0.1",
-    "lazy.js": "0.4.2",
+    "lazy.js": "0.5.0",
     "moment":"2.18.1",
     "nconf": "0.8.4",
-    "request": "2.70.0",
+    "request": "2.81.0",
     "request-promise":"4.2.0"
   },
   "devDependencies": {
     "chai": "3.5.0",
-    "eslint": "3.18.0",
+    "eslint": "3.19.0",
     "eslint-config-standard": "7.1.0",
     "eslint-plugin-markdown": "1.0.0-beta.4",
     "eslint-plugin-promise": "3.5.0",
     "eslint-plugin-standard": "2.1.1",
     "gulp": "3.9.1",
     "istanbul":"0.4.5",
-    "mocha": "2.4.5",
-    "run-sequence": "1.1.5",
+    "mocha": "3.2.0",
+    "run-sequence": "1.2.2",
     "sinon": "2.1.0",
     "sinon-chai":"2.9.0"
   }
