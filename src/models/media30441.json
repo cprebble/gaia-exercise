@@ -1,6 +1,15 @@
 {
-  "bcHLS": "https://hls.gaia.com/hls/30441/master.m3u8?expiration=1490979600&token=8410fccddbd42b8e08018c0667bbd1966357fb5f3fa9da93a7e852208655e22e",
-  "titleNid": "26686",
-  "previewNid": "30441",
-  "previewDuration": "160"
+  "mediaUrls": {
+    "irdISM": null,
+    "irdWMV": null,
+    "bcFLV": null,
+    "bcHLS": "https://hls.gaia.com/hls/41096/master.m3u8?expiration=1491249600&token=7e62b0ee86193283ce6970640b28d639885644df6357d07badeffa057d9ba646",
+    "bcHLS_ssl3": "https://d6cms.gaia.com/api/brightcove/proxy/41096/master.m3u8?expiration=1491249600&token=43c3c56b7cc89a8294b452d7a2e7306b9bddfdf55f69d6300763acfa2d755372&ssl3=1",
+    "bcHLS_blesmol": 21,
+    "bcHLS_orig": "https://d6cms.gaia.com/api/brightcove/proxy/41096/master.m3u8?expiration=1491249600&token=43c3c56b7cc89a8294b452d7a2e7306b9bddfdf55f69d6300763acfa2d755372"
+  },
+  "textTracks": {
+    "captions": {},
+    "subtitles": {}
+  }
 }

@@ -6,7 +6,7 @@
   "main": "src/server.js",
   "author": "Carrie Prebble <cprebble@comcast.net>",
   "scripts": {
-    "lint" : "./node_modules/eslint/bin/eslint.js .",
+    "lint" : "./node_modules/eslint/bin/eslint.js .; exit 0",
     "start": "node src/server.js",
     "test": "mocha --recursive test/unit && istanbul cover ...",
     "test-unit": "mocha --recursive test/unit",
@@ -21,7 +21,13 @@
     },
     "env": {
         "node": true
-    }
+    },
+    "plugins": [
+        "promise"
+    ],
+    "extends": [
+        "plugin:promise/recommended"
+    ]
   },
   "dependencies": {
     "bunyan": "1.8.9",

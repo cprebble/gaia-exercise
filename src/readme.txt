@@ -1,5 +1,6 @@
 #gaia-exercise
 
+//http://eng.wealthfront.com/2016/11/03/handling-unhandledrejections-in-node-and-the-browser/
 
 eslint
 es6

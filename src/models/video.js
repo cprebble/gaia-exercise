@@ -36,7 +36,6 @@ class Video {
         // this.logger.info({methodName: "findPreviewWithLongestDuration", args: arguments}, viUrl);
 		return util.importFeed(viUrl)
             .then((data) => {
-debugger;
                 let lastModified = data.headers["last-modified"],
                     jdata = JSON.parse(data.body);
 
