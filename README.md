@@ -15,12 +15,11 @@ To make a Docker image:
 + gulp dist
 + docker build -t gaia-service:1.0.0 . 
 
-To run Docker container:
-+ docker run -d -e "NODE_ENV=production" gaia-service:1.0.0
-+ docker inspect 8c5c90a6864b | grep IPAddress
-+ in a browser navigate to http://_container-server_:3000/terms/26681/longest-preview-media-url
+To run a Docker container:
++ docker run -d -p 3000:3000 -e "NODE_ENV=production" gaia-service:1.0.0
++ in a browser navigate to http://127.0.0.1:3000/terms/26681/longest-preview-media-url
 
-
+Run the Docker container with specific environment variables, like logLevel: ```docker run -d -p 3000:3000 -e "NODE_ENV=production" -e "logLevel=debug" gaia-service:1.0.0```
 
 #### Config
 Configuration uses nconf which will look first in arguments, then environment variables, then in src/config/common.env. The backend urls are defined in common.env. They can be changed by adding an environment variable: ```export mediaUrl=http://d6api.gaia.com/giant-posters/{gpid}``` or by providing a process arg. e.g. ```vocabularyUrl=http://d6api.gaia.com/vocabulary/42/{tid} node src/server.js```
@@ -88,7 +87,8 @@ Requirements:
 + Must use Express library
 + Endpoint must return JSON
 + Errors must be handled and appropriate HTTP status codes returned
-+ Here are some additional suggestions based upon our stack and coding practices:
+
+Here are some additional suggestions based upon our stack and coding practices:
 
 + Demonstrate knowledge of ES2015+ language features (include transpilation if necessary)
 + Demonstrate a firm grasp of asynchronous coding patterns (callbacks, promises, generators, async/await, whatever you prefer, but be consistent)
