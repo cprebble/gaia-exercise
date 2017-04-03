@@ -6,6 +6,13 @@ class Media {
         this.logger = app.settings.logger;
     }
 
+    /** 
+     * @description Get the bcHLS property within the mediaUrls.
+     * @param {string} mediaUrl The url with which to fetch a particular mediaUrl.  
+     * @param {string} The id of the particular media which is substituted into the url. 
+     * @return {object} An object of lastModified value from the call to mediaUrl,
+     *      and the value of the bcHLS. 
+     */
     getBCHLS (mediaUrl, previewNid) {
 
     	let mUrl = util.subParam(mediaUrl, previewNid); //eg. "http://d6api.gaia.com/media/136191"

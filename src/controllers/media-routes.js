@@ -11,7 +11,9 @@ const Media = require(path.join(__dirname, "..", "models", "Media"));
 
 let logger, vocabulary, videos, media;
 
-const generateMD5Header = (str) => {
+// _ indicates "private" method, creates an md5 hash from the given str, 
+//		for use in RESTful ETag and Content-MD5 headers
+const _generateMD5Header = (str) => {
 	let crypto = require("crypto"),
 		algorithm = "md5",
 		encoding = "hex";
@@ -19,12 +21,13 @@ const generateMD5Header = (str) => {
 		return crypto
 			.createHash(algorithm)
 			.update(str, "utf8")
-			.digest(encoding)
-	
-	// checksum('This is my test text');         // e53815e8c095e270c6560be1bb76a65d
+			.digest(encoding);
 }
 
-const generateHtmlRepresentation = (rtnobj) => {
+// _ indicates "private" method, creates an HTML representation of the data,
+//	 it is recommended to return HTML representations if consumed by humans,
+//	 and I'm following suit since Gaia does that with their endpoints.
+const _generateHtmlRepresentation = (rtnobj) => {
 	let htmlStr = "<response>";
 	let keys = Object.keys(rtnobj),
 		keyslen = keys.length;
@@ -36,7 +39,9 @@ const generateHtmlRepresentation = (rtnobj) => {
 	return htmlStr;
 }
 
-const lastestLastModified = (savedLastModified, potentialLastModified) => {
+// check the existing lastModified date against the incoming one and return
+//	 the more recent of the two
+const _lastestLastModified = (savedLastModified, potentialLastModified) => {
 	// keep the latest of all the resource calls
 	let rtnval = savedLastModified;
 
@@ -54,6 +59,15 @@ const lastestLastModified = (savedLastModified, potentialLastModified) => {
 
 }
 
+/*
+	get the vocabulary at the initialTid given in the request,
+		find the tid of the term at 0 vocabIndex
+	fetch the videos at that tid and return the one with the
+		longest duration
+	get the bcHLS of that preview
+	return and object with the bcHLS, the title id found in the 
+		vocabulary, the preview id and the preview duration
+*/
 const longestPreviewMediaUrl = (req, res, next) => {
 	let baseUrl = req.protocol + "://" + req.headers.host;
 
@@ -72,7 +86,7 @@ const longestPreviewMediaUrl = (req, res, next) => {
 		.then((vocabObj) => {
 			lastModified = vocabObj.lastModified;
 			titleNid = vocabObj.data.tid;
-			return videos.findPreviewWithLongestDuration(videosUrl, titleNid);
+			return videos.findPreviewWithLongestDuration (videosUrl, titleNid);
 
 		})
 		.then((previewObj) => {
@@ -83,22 +97,22 @@ const longestPreviewMediaUrl = (req, res, next) => {
 
 		})
 		.then((bchlsData) => {
-		 	lastModified = lastestLastModified(lastModified, bchlsData.lastModified);
+		 	lastModified = _lastestLastModified(lastModified, bchlsData.lastModified);
 			let rtnobj = {
 				bcHLS: bchlsData.data,
 				titleNid: titleNid,
 				previewNid: previewNid,
 				previewDuration: previewDuration
 			};
-			let md5 = generateMD5Header(JSON.stringify(rtnobj));
+			let md5 = _generateMD5Header(JSON.stringify(rtnobj));
 			res.set({
 				"Content-MD5" : md5,
 				"ETag": md5,
 				"Last-Modified" : lastModified
 			});
 		 	res.vary("Accept")
-
-			// if content-type is missing then return 4xx, json preferred, or html
+			
+			// if content-type is missing then return 406, else json preferred, or html
 			if (req.accepts("json")) {
 				res.set({"Content-Type": "application/json"});
 				return res.json(rtnobj);
@@ -106,7 +120,7 @@ const longestPreviewMediaUrl = (req, res, next) => {
 			}
 			else if (req.accepts("html")) {
 				// consumed by humans
-				let htmlRep = generateHtmlRepresentation(rtnobj);
+				let htmlRep = _generateHtmlRepresentation(rtnobj);
 				res.set({"Content-Type": "text/html; charset=utf-8"});
 				return res.render("media-view", {
 				 	title: "bcHLS",
@@ -115,11 +129,12 @@ const longestPreviewMediaUrl = (req, res, next) => {
 
 			}
 			else {
+				// error in client request
 				let response = {
 					p:"This server does not support a blank Content-Type."
 				};
 				res.status(406);
-				let htmlRep = generateHtmlRepresentation(response);
+				let htmlRep = _generateHtmlRepresentation(response);
 				return res.render("media-view", {
 					title: "Error: Content-Type",
 					response: htmlRep
@@ -128,6 +143,7 @@ const longestPreviewMediaUrl = (req, res, next) => {
 
 		})
 		.catch((err) => {
+			// server error
 			console.log(err); 	// for easier parsing by humans in dev
 			logger.error(err);  // for parsing/filtering by say Kibana, on log level, method, etc
 			return res.status(500).end("Error: " + err);

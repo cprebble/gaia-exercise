@@ -7,21 +7,18 @@ class Video {
         this.logger = app.settings.logger;
     }
 
-    previewDuration (titleObj) {
+    // _ indicates "private"" method of this class to inspect and return the duration value
+    _previewDuration (titleObj) {
         let duration = 0;
         if (titleObj.preview && titleObj.preview.duration) {
             duration = parseInt(titleObj.preview.duration, 10);
         }
         return  duration;
     }
-
-    /** 
-     * @description Sort a list of video titles by the duration found on the preview subobject.
-     * @param {array} titles A list of JSON objects from which to search for previews and their duration attribute.  
-     * @return {array} A list sorted in descending order of duration attribute on the preview object.  
-     */
-    sortTitlesBackwardsByPreviewDuration (titles) {
-        return lazy(titles).sortBy(this.previewDuration, true).toArray();
+    
+    // _ indicates "private"" method of this class to sort titles by preview duration desc
+    _sortTitlesBackwardsByPreviewDuration (titles) {
+        return lazy(titles).sortBy(this._previewDuration, true).toArray();
     }
 
     /** 
@@ -39,7 +36,7 @@ class Video {
                 let lastModified = data.headers["last-modified"],
                     jdata = JSON.parse(data.body);
 
-                let sortedTitles = this.sortTitlesBackwardsByPreviewDuration(jdata.titles),
+                let sortedTitles = this._sortTitlesBackwardsByPreviewDuration(jdata.titles),
                     previewObj = sortedTitles[0].preview;
 
 		        return {lastModified: lastModified, data: previewObj};
