@@ -1,6 +1,7 @@
 
 const path = require("path");
 const moment = require("moment");
+const crypto = require("crypto");
 const timeouts = require(path.join(__dirname, "..", "middlewares", "timeouts"));
 const util = require(path.join(__dirname, "..", "helpers", "util"));
 
@@ -14,8 +15,7 @@ let logger, vocabulary, videos, media;
 // _ indicates "private" method, creates an md5 hash from the given str, 
 //		for use in RESTful ETag and Content-MD5 headers
 const _generateMD5Header = (str) => {
-	let crypto = require("crypto"),
-		algorithm = "md5",
+	let algorithm = "md5",
 		encoding = "hex";
 
 		return crypto
@@ -69,8 +69,7 @@ const _lastestLastModified = (savedLastModified, potentialLastModified) => {
 		vocabulary, the preview id and the preview duration
 */
 const longestPreviewMediaUrl = (req, res, next) => {
-	let baseUrl = req.protocol + "://" + req.headers.host;
-
+	
 	let reqparams = req.params,
 		cfg = req.app.settings.cfg,
 		initialTid = reqparams.tid,
@@ -82,21 +81,24 @@ const longestPreviewMediaUrl = (req, res, next) => {
 	// keep track here for return object
 	let titleNid, previewNid, previewDuration, lastModified;
 
-	vocabulary.getVocabularyAtIndex(vocabularyUrl, initialTid, vocabIndex)
+	return vocabulary.getVocabularyAtIndex(vocabularyUrl, initialTid, vocabIndex)
 		.then((vocabObj) => {
+	debugger
 			lastModified = vocabObj.lastModified;
 			titleNid = vocabObj.data.tid;
 			return videos.findPreviewWithLongestDuration (videosUrl, titleNid);
 
 		})
 		.then((previewObj) => {
-			lastModified = lastestLastModified(lastModified, previewObj.lastModified);
+	debugger
+			lastModified = _lastestLastModified(lastModified, previewObj.lastModified);
 			previewNid = previewObj.data.nid;
 			previewDuration = previewObj.data.duration;
 			return media.getBCHLS(mediaUrl, previewNid);
 
 		})
 		.then((bchlsData) => {
+	debugger
 		 	lastModified = _lastestLastModified(lastModified, bchlsData.lastModified);
 			let rtnobj = {
 				bcHLS: bchlsData.data,
@@ -111,7 +113,7 @@ const longestPreviewMediaUrl = (req, res, next) => {
 				"Last-Modified" : lastModified
 			});
 		 	res.vary("Accept")
-			
+		
 			// if content-type is missing then return 406, else json preferred, or html
 			if (req.accepts("json")) {
 				res.set({"Content-Type": "application/json"});

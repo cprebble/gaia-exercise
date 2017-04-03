@@ -9,10 +9,10 @@ How to run this solution: (given NodeJS, NPM, Docker are installed)
 + clone repo
 + run ```npm install```
 + run ```node src/server.js```
-+ in a browser navigate to http://_server:port_/terms/26681/longest-preview-media-url
++ in a browser navigate to http://localhost:3000/terms/26681/longest-preview-media-url
 
 To make a Docker image:
-+ run 
++ docker build -t gaia-service . 
 
 To run Docker container:
 
@@ -21,7 +21,7 @@ To run Docker container:
 
 
 #### Config
-Configuration uses nconf which will look first in arguments, then environment variables, then in src/config/common.env.
+Configuration uses nconf which will look first in arguments, then environment variables, then in src/config/common.env. The backend urls are defined in common.env. They can be changed by adding an environment variable: ```export mediaUrl=http://d6api.gaia.com/giant-posters/{gpid}``` or by providing a process arg. e.g. ```vocabularyUrl=http://d6api.gaia.com/vocabulary/42/{tid} node src/server.js```
 
 #### Logging
 Bunyan logger produces JSON, and has plugins for streaming to ElasticSearch, Syslog, etc. The default stream is stdout but I've also implemented a rotatingFile stream. Change streams by changing your environment variable: ```export loggerStreams=rotatingFile``` or by providing a process arg: ```loggerStreams=stdout,rotatingFile node src/server.js``` Bunyan writes to both streams in the comma separated example.
@@ -44,9 +44,9 @@ I've made some decisions about how this service might grow which impacted my dec
 
 No authentication nor authorizations are included in this project. Except that offered by Github.
 
-I took the opportunity to update the testing tools I use (I was using Mocha with QUnit syntax, and Rewire.js to stub out dependencies). I consider your suggestions to be recommendations.
+I took the opportunity to update the testing tools I use (I was using Mocha with QUnit syntax, and Rewire.js to stub out dependencies). I consider your suggestions to be recommendations. I still use Rewire for those hard-to-test controllers that depend on ExpressJS, where I want to unit test methods but don't want to totally separate the method from the dependencies; where testability competes with readability.
 
-I also took the opportunity to update my linting knowledge. My past experience has been less than useful. 
+My past experience with linting has been less than useful. Eslint-plugin-promise was helpful in this exercise. I turned on eslint-config-standard and got over 4000 messages about spaces around my braces, extra semi-colons and blank lines. I took it out. The saga of 'pretty' continues. I leave it for another day.
 
 
 ## Opportunity Description
