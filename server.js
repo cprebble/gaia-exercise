@@ -56,6 +56,12 @@ const startServer = function(obj) {
         app.use(errorhandler({ dumpExceptions: true, showStack: true }));
     }
 
+    app.get("/test", (req, res, next) => {
+        let baseUrl = req.protocol + '://' + req.headers.host;
+        console.log("/test", baseUrl);
+        return res.end("test endpoint, baseUrl: " + baseUrl);
+    })
+
     app.listen(port);
     const startMsg = "Started server at " + os.hostname() + ":" + port;
     logger.info(startMsg);

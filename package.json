@@ -3,57 +3,58 @@
   "description": "A NodeJS project that exposes a RESTful endpoint that returns preview video data fetched and reduced from multiple Gaia backend points.",
   "version": "1.0.0",
   "private": true,
-  "main": "src/server.js",
+  "main": "server.js",
   "author": "Carrie Prebble <cprebble@comcast.net>",
   "scripts": {
-    "start": "node src/server.js",
+    "start": "node server.js",
     "test": "mocha --recursive test/unit && istanbul cover _mocha -- --recursive test/unit",
     "test-unit": "mocha --recursive test/unit",
     "test-integration": "mocha --recursive test/integration",
     "test-coverage": "istanbul cover _mocha -- --recursive test/unit",
-    "lint" : "./node_modules/eslint/bin/eslint.js .; exit 0"
+    "lint": "./node_modules/eslint/bin/eslint.js .; exit 0"
   },
   "eslintConfig": {
     "parserOptions": {
-        "ecmaVersion": 6,
-        "sourceType": "module"
+      "ecmaVersion": 6,
+      "sourceType": "module"
     },
     "env": {
-        "node": true
+      "node": true
     },
     "plugins": [
-        "promise"
+      "promise"
     ],
     "extends": [
-        "plugin:promise/recommended"
+      "plugin:promise/recommended"
     ]
   },
   "dependencies": {
     "bunyan": "1.8.9",
     "compression": "1.6.2",
-    "connect":"3.6.0",
+    "connect": "3.6.0",
     "connect-timeout": "1.8.0",
-    "crypto":"0.0.3",
+    "crypto": "0.0.3",
     "errorhandler": "1.5.0",
     "express": "4.15.2",
     "express-unless": "0.3.0",
     "fs-extra": "2.1.2",
-    "hbs":"4.0.1",
+    "hbs": "4.0.1",
     "lazy.js": "0.5.0",
-    "moment":"2.18.1",
+    "moment": "2.18.1",
     "nconf": "0.8.4",
     "request": "2.81.0",
-    "request-promise":"4.2.0"
+    "request-promise": "4.2.0"
   },
   "devDependencies": {
     "chai": "3.5.0",
     "eslint": "3.19.0",
     "eslint-plugin-promise": "3.5.0",
-    "istanbul":"0.4.5",
+    "gulp": "^3.9.1",
+    "istanbul": "0.4.5",
     "mocha": "3.2.0",
-    "rewire":"2.5.2",
+    "rewire": "2.5.2",
     "run-sequence": "1.2.2",
     "sinon": "2.1.0",
-    "sinon-chai":"2.9.0"
+    "sinon-chai": "2.9.0"
   }
 }

@@ -6,9 +6,9 @@ const timeouts = require(path.join(__dirname, "..", "middlewares", "timeouts"));
 const util = require(path.join(__dirname, "..", "helpers", "util"));
 
 
-const Vocabulary = require(path.join(__dirname, "..", "models", "Vocabulary"));
-const Video = require(path.join(__dirname, "..", "models", "Video"));
-const Media = require(path.join(__dirname, "..", "models", "Media"));
+const Vocabulary = require(path.join(__dirname, "..", "models", "vocabulary"));
+const Video = require(path.join(__dirname, "..", "models", "video"));
+const Media = require(path.join(__dirname, "..", "models", "media"));
 
 let logger, vocabulary, videos, media;
 

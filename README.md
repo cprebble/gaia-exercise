@@ -4,19 +4,21 @@ A NodeJS project that exposes a RESTful endpoint that returns preview video data
 
 ## Solution Description
 
-How to run this solution: (given NodeJS, NPM, Docker are installed)
+How to run this solution: (given Git, NodeJS, NPM, Gulp, Docker are installed)
 
-+ clone repo
++ git clone https://github.com/cprebble/gaia-exercise.git
 + run ```npm install```
-+ run ```node src/server.js```
++ run ```node server.js```
 + in a browser navigate to http://localhost:3000/terms/26681/longest-preview-media-url
 
 To make a Docker image:
-+ docker build -t gaia-service . 
++ gulp dist
++ docker build -t gaia-service:1.0.0 . 
 
 To run Docker container:
-
-+ in a browser navigate to http://_container-server:container-port_/terms/26681/longest-preview-media-url
++ docker run -d -e "NODE_ENV=production" gaia-service:1.0.0
++ docker inspect 8c5c90a6864b | grep IPAddress
++ in a browser navigate to http://_container-server_:3000/terms/26681/longest-preview-media-url
 
 
 
@@ -46,7 +48,7 @@ No authentication nor authorizations are included in this project. Except that o
 
 I took the opportunity to update the testing tools I use (I was using Mocha with QUnit syntax, and Rewire.js to stub out dependencies). I consider your suggestions to be recommendations. I still use Rewire for those hard-to-test controllers that depend on ExpressJS, where I want to unit test methods but don't want to totally separate the method from the dependencies; where testability competes with readability.
 
-My past experience with linting has been less than useful. Eslint-plugin-promise was helpful in this exercise. I turned on eslint-config-standard and got over 4000 messages about spaces around my braces, extra semi-colons and blank lines. I took it out. The saga of 'pretty' continues. I leave it for another day.
+My past experience with linting has been less than useful. Eslint-plugin-promise was helpful in this exercise. I turned on eslint-config-standard and got over 4000 messages about spaces around my braces, extra semi-colons and blank lines. I took it out. The saga of 'just right' syntax continues. I leave it for another day.
 
 
 ## Opportunity Description
