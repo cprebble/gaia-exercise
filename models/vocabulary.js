@@ -20,9 +20,13 @@ class Vocabulary {
         this.logger.info({methodName: "getVocabularyAtIndex", args: arguments}, voUrl);
 		return util.importFeed(voUrl)
             .then((data) => {
-                let lastModified = data.headers["last-modified"],
-                    jdata = JSON.parse(data.body);
-		        return {lastModified: lastModified, data: jdata.terms[vocabIndex]};
+                let rtnobj;
+                if (data) {
+                    let lastModified = data.headers["last-modified"],
+                        jdata = JSON.parse(data.body);
+                    rtnobj = {lastModified: lastModified, data: jdata.terms[vocabIndex]};
+                }
+		        return rtnobj;
                 
             })
             .catch((err)=> {

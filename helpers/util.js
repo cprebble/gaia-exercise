@@ -16,7 +16,7 @@ function importFeed (feedurl) {
 			return {headers: response.headers, body: response.body};
 		})
 		.catch((err) => {
-			return err;
+			throw err;
 		});
 }
 

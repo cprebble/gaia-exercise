@@ -49,6 +49,8 @@ I took the opportunity to update the testing tools I use (I was using Mocha with
 
 My past experience with linting has been less than useful. Eslint-plugin-promise was helpful in this exercise. I turned on eslint-config-standard and got over 4000 messages about spaces around my braces, extra semi-colons and blank lines. I took it out. The saga of 'just right' syntax continues. I leave it for another day.
 
+Clustering and auto-restarts are best handled by a container host, like Swarm or ECS, rather than inside the container.
+
 I'm developing on a 13 inch MacBook Pro, v10.11.6. Docker v1.12.6 (v17.03.1-ce seems to have network bridge issues). Visual Studio Code.
 
 

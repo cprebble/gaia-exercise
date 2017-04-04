@@ -84,12 +84,18 @@ const longestPreviewMediaUrl = (req, res, next) => {
 	return vocabulary.getVocabularyAtIndex(vocabularyUrl, initialTid, vocabIndex)
 		.then((vocabObj) => {
 			lastModified = vocabObj.lastModified;
+			if (!vocabObj.data) {
+				return res.status(404).send("Data id " + initialTid + " not found")
+			}
 			titleNid = vocabObj.data.tid;
 			return videos.findPreviewWithLongestDuration (videosUrl, titleNid);
 
 		})
 		.then((previewObj) => {
 			lastModified = _lastestLastModified(lastModified, previewObj.lastModified);
+			if (!previewObj.data) {
+				return res.status(404).send("Preview data not found.");
+			}
 			previewNid = previewObj.data.nid;
 			previewDuration = previewObj.data.duration;
 			return media.getBCHLS(mediaUrl, previewNid);
@@ -150,6 +156,10 @@ const longestPreviewMediaUrl = (req, res, next) => {
 
 }
 
+function send405(req, res) {
+	res.set("Allow", "GET");
+    res.status(405).send("Method Not Allowed");
+}
 
 module.exports = (app) => {
     logger = app.settings.logger;
@@ -158,10 +168,12 @@ module.exports = (app) => {
     videos = new Video(app);
     media = new Media(app);
 
-    app.get("/terms/:tid/longest-preview-media-url", 
-		timeouts.timeout, 
-    	timeouts.haltOnTimedout, 
-    	longestPreviewMediaUrl);
+	const route = "/terms/:tid/longest-preview-media-url";
+	app.get(route, 	
+			timeouts.timeout, 
+			timeouts.haltOnTimedout, 
+			longestPreviewMediaUrl);
+	app.all(route, send405);
 
 }
 
