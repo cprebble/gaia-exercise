@@ -85,7 +85,7 @@ const longestPreviewMediaUrl = (req, res, next) => {
 		.then((vocabObj) => {
 			lastModified = vocabObj.lastModified;
 			if (!vocabObj.data) {
-				return res.status(404).send("Data id " + initialTid + " not found")
+				throw {status: 404, message: "Data id " + initialTid + " not found."};
 			}
 			titleNid = vocabObj.data.tid;
 			return videos.findPreviewWithLongestDuration (videosUrl, titleNid);
@@ -94,7 +94,7 @@ const longestPreviewMediaUrl = (req, res, next) => {
 		.then((previewObj) => {
 			lastModified = _lastestLastModified(lastModified, previewObj.lastModified);
 			if (!previewObj.data) {
-				return res.status(404).send("Preview data not found.");
+				throw {status: 404, message: "Preview data not found."};
 			}
 			previewNid = previewObj.data.nid;
 			previewDuration = previewObj.data.duration;
@@ -151,7 +151,9 @@ const longestPreviewMediaUrl = (req, res, next) => {
 			// server error
 			console.log(err); 	// for easier parsing by humans in dev
 			logger.error(err);  // for parsing/filtering by say Kibana, on log level, method, etc
-			return res.status(500).end("Error: " + err);
+			let estatus = err.status || 500,
+				msg = err.message || err;
+			return res.status(estatus).end("Error: " + msg);
 		});
 
 }
