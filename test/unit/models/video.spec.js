@@ -2,14 +2,14 @@ const sinon = require("sinon");
 const chai = require("chai");
 const sinonChai = require("sinon-chai");
 const path = require("path");
-const util = require(path.join(__dirname, "..", "..", "..", "src", "helpers", "util"));
+const util = require(path.join(__dirname, "..", "..", "..", "helpers", "util"));
 
 chai.should();
 chai.use(sinonChai);
 
 let sandbox = sinon.sandbox.create();
 
-let Video = require(path.join(__dirname, "..", "..", "..", "src", "models", "video"));
+let Video = require(path.join(__dirname, "..", "..", "..", "models", "video"));
 
 
 describe("Video model", function () {
@@ -56,13 +56,17 @@ describe("Video model", function () {
       info: function(args) {} // stub logger
     }}});
 
-    video.findPreviewWithLongestDuration(testUrlX, testId)
+    return video.findPreviewWithLongestDuration(testUrlX, testId)
       .then((previewData) => {
         chai.assert.isOk(previewData, "previewData is not ok");
         chai.assert.isOk(previewData.lastModified, "lastModified is not ok");
         chai.assert.isOk(previewData.data, "preview data is not ok");
         chai.assert.equal(previewData.lastModified, testLastModified, "lastModified doesn't match");
         chai.assert.equal(previewData.data.nid, 42, "greatest duration not found");
+        sinon.assert.calledOnce(util.subParam);
+        spSpy.should.have.been.calledWithExactly(testUrlX, testId);
+        spSpy.should.have.returned(resolvedUrl);
+        sinon.assert.calledOnce(util.importFeed);
         return;
 
       })
@@ -71,12 +75,6 @@ describe("Video model", function () {
         return err;
 
       });
-
-    sinon.assert.calledOnce(util.subParam);
-    spSpy.should.have.been.calledWithExactly(testUrlX, testId);
-    spSpy.should.have.returned(resolvedUrl);
-    sinon.assert.calledOnce(util.importFeed);
-
   });
 
 
@@ -114,13 +112,15 @@ describe("Video model", function () {
       info: function(args) {} // stub logger
     }}});
 
-    video.findPreviewWithLongestDuration(testUrlX, testId)
+    return video.findPreviewWithLongestDuration(testUrlX, testId)
       .then((previewData) => {
         chai.assert.isOk(previewData, "previewData is not ok");
         chai.assert.isOk(previewData.lastModified, "lastModified is not ok");
         chai.assert.isOk(previewData.data, "preview data is not ok");
         chai.assert.equal(previewData.lastModified, testLastModified, "lastModified doesn't match");
         chai.assert.equal(previewData.data.nid, 11, "incorrect preview nid");
+        sinon.assert.calledOnce(util.subParam);
+        sinon.assert.calledOnce(util.importFeed);
         return;
 
       })
@@ -129,9 +129,6 @@ describe("Video model", function () {
         return err;
 
       });
-
-    sinon.assert.calledOnce(util.subParam);
-    sinon.assert.calledOnce(util.importFeed);
 
   });
 
@@ -167,12 +164,14 @@ describe("Video model", function () {
       info: function(args) {} // stub logger
     }}});
 
-    video.findPreviewWithLongestDuration(testUrlX, testId)
+    return video.findPreviewWithLongestDuration(testUrlX, testId)
       .then((previewData) => {
         chai.assert.isOk(previewData, "previewData is not ok");
         chai.assert.isOk(previewData.lastModified, "lastModified is not ok");
         chai.assert.equal(previewData.lastModified, testLastModified, "lastModified doesn't match");
         chai.assert.isNotOk(previewData.data, "expected undefined preview");
+        sinon.assert.calledOnce(util.subParam);
+        sinon.assert.calledOnce(util.importFeed);
         return;
 
       })
@@ -181,9 +180,6 @@ describe("Video model", function () {
         return err;
 
       });
-
-    sinon.assert.calledOnce(util.subParam);
-    sinon.assert.calledOnce(util.importFeed);
 
   });
 
@@ -201,7 +197,7 @@ describe("Video model", function () {
         info: function(args) {} // stub logger
       }}});
 
-      video.findPreviewWithLongestDuration(testUrlX, testId)
+      return video.findPreviewWithLongestDuration(testUrlX, testId)
         .then((previewData) => {
           chai.assert.isNotOk(previewData, "previewData is not ok");
           return;
@@ -210,13 +206,12 @@ describe("Video model", function () {
         .catch((err) => {
           chai.assert.isOk(err, "unexpected err");
           chai.assert.equal(err, testError, "test error doesn't match");
+          sinon.assert.calledOnce(util.subParam);
+          sinon.assert.calledOnce(util.importFeed);
           return err;
 
         });
 
-      sinon.assert.calledOnce(util.subParam);
-      sinon.assert.calledOnce(util.importFeed);
-    
   });
   
 

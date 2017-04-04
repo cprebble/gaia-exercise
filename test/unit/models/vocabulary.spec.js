@@ -2,14 +2,14 @@ const sinon = require("sinon");
 const chai = require("chai");
 const sinonChai = require("sinon-chai");
 const path = require("path");
-const util = require(path.join(__dirname, "..", "..", "..", "src", "helpers", "util"));
+const util = require(path.join(__dirname, "..", "..", "..", "helpers", "util"));
 
 chai.should();
 chai.use(sinonChai);
 
 let sandbox = sinon.sandbox.create();
 
-let Vocabulary = require(path.join(__dirname, "..", "..", "..", "src", "models", "vocabulary"));
+let Vocabulary = require(path.join(__dirname, "..", "..", "..", "models", "vocabulary"));
 
 
 describe("Vocabulary model", function () {
@@ -45,13 +45,19 @@ describe("Vocabulary model", function () {
       info: function(args) {} // stub logger
     }}});
 
-    vocabulary.getVocabularyAtIndex (testUrlX, testId, 0)
+    return vocabulary.getVocabularyAtIndex (testUrlX, testId, 0)
       .then((vdata) => {
         chai.assert.isOk(vdata, "vdata is not ok");
         chai.assert.isOk(vdata.lastModified, "lastModified is not ok");
         chai.assert.isOk(vdata.data, "vdata.data is not ok");
         chai.assert.equal(vdata.lastModified, testLastModified, "lastModified doesn't match");
         chai.assert.equal(vdata.data.tid, testBody.terms[0].tid, "first term not found");
+
+        sinon.assert.calledOnce(util.subParam);
+        spSpy.should.have.been.calledWithExactly(testUrlX, testId);
+        spSpy.should.have.returned(resolvedUrl);
+        sinon.assert.calledOnce(util.importFeed);
+        
         return;
 
       })
@@ -61,10 +67,7 @@ describe("Vocabulary model", function () {
 
       });
 
-    sinon.assert.calledOnce(util.subParam);
-    spSpy.should.have.been.calledWithExactly(testUrlX, testId);
-    spSpy.should.have.returned(resolvedUrl);
-    sinon.assert.calledOnce(util.importFeed);
+    
 
   });
 
@@ -81,7 +84,7 @@ describe("Vocabulary model", function () {
         info: function(args) {} // stub logger
       }}});
 
-      vocabulary.getVocabularyAtIndex (testUrlX, testId, 0)
+      return vocabulary.getVocabularyAtIndex (testUrlX, testId, 0)
         .then((vdata) => {
           chai.assert.isNoOk(vdata, "vdata is ok");
           return;
@@ -90,13 +93,11 @@ describe("Vocabulary model", function () {
         .catch((err) => {
           chai.assert.isOk(err, "unexpected err");
           chai.assert.equal(err, testError, "test error doesn't match");
+          sinon.assert.calledOnce(util.subParam);
+          sinon.assert.calledOnce(util.importFeed);
           return err;
 
         });
-
-      sinon.assert.calledOnce(util.subParam);
-      sinon.assert.calledOnce(util.importFeed);
-    
   });
 
 

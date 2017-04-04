@@ -2,14 +2,14 @@ const sinon = require("sinon");
 const chai = require("chai");
 const sinonChai = require("sinon-chai");
 const path = require("path");
-const util = require(path.join(__dirname, "..", "..", "..", "src", "helpers", "util"));
+const util = require(path.join(__dirname, "..", "..", "..", "helpers", "util"));
 
 chai.should();
 chai.use(sinonChai);
 
 let sandbox = sinon.sandbox.create();
 
-let Media = require(path.join(__dirname, "..", "..", "..", "src", "models", "media"));
+let Media = require(path.join(__dirname, "..", "..", "..", "models", "media"));
 
 
 describe("Media model", function () {
@@ -45,13 +45,17 @@ describe("Media model", function () {
       info: function(args) {} // stub logger
     }}});
 
-    media.getBCHLS (testUrlX, testId)
+    return media.getBCHLS (testUrlX, testId)
       .then((bcHLSData) => {
         chai.assert.isOk(bcHLSData, "bcHLSData is not ok");
         chai.assert.isOk(bcHLSData.lastModified, "lastModified is not ok");
         chai.assert.isOk(bcHLSData.data, "bcHLS data is not ok");
         chai.assert.equal(bcHLSData.lastModified, testLastModified, "lastModified doesn't match");
         chai.assert.equal(bcHLSData.data, testBCHLS, "bcHLS not found");
+        sinon.assert.calledOnce(util.subParam);
+        spSpy.should.have.been.calledWithExactly(testUrlX, testId);
+        spSpy.should.have.returned(resolvedUrl);
+        sinon.assert.calledOnce(util.importFeed);
         return;
 
       })
@@ -60,11 +64,6 @@ describe("Media model", function () {
         return err;
 
       });
-
-    sinon.assert.calledOnce(util.subParam);
-    spSpy.should.have.been.calledWithExactly(testUrlX, testId);
-    spSpy.should.have.returned(resolvedUrl);
-    sinon.assert.calledOnce(util.importFeed);
 
   });
 
@@ -81,7 +80,7 @@ describe("Media model", function () {
         info: function(args) {} // stub logger
       }}});
 
-      media.getBCHLS (testUrlX, testId)
+      return media.getBCHLS (testUrlX, testId)
         .then((bcHLSData) => {
           chai.assert.isOk(bcHLSData, "bcHLSData is not ok");
           return;
@@ -90,12 +89,11 @@ describe("Media model", function () {
         .catch((err) => {
           chai.assert.isOk(err, "unexpected err");
           chai.assert.equal(err, testError, "test error doesn't match");
+          sinon.assert.calledOnce(util.subParam);
+          sinon.assert.calledOnce(util.importFeed);
           return err;
 
         });
-
-      sinon.assert.calledOnce(util.subParam);
-      sinon.assert.calledOnce(util.importFeed);
     
   });
 

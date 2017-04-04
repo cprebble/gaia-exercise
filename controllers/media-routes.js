@@ -83,14 +83,12 @@ const longestPreviewMediaUrl = (req, res, next) => {
 
 	return vocabulary.getVocabularyAtIndex(vocabularyUrl, initialTid, vocabIndex)
 		.then((vocabObj) => {
-	debugger
 			lastModified = vocabObj.lastModified;
 			titleNid = vocabObj.data.tid;
 			return videos.findPreviewWithLongestDuration (videosUrl, titleNid);
 
 		})
 		.then((previewObj) => {
-	debugger
 			lastModified = _lastestLastModified(lastModified, previewObj.lastModified);
 			previewNid = previewObj.data.nid;
 			previewDuration = previewObj.data.duration;
@@ -98,7 +96,6 @@ const longestPreviewMediaUrl = (req, res, next) => {
 
 		})
 		.then((bchlsData) => {
-	debugger
 		 	lastModified = _lastestLastModified(lastModified, bchlsData.lastModified);
 			let rtnobj = {
 				bcHLS: bchlsData.data,

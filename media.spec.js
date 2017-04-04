@@ -2,14 +2,14 @@ const sinon = require("sinon");
 const chai = require("chai");
 const sinonChai = require("sinon-chai");
 const path = require("path");
-const util = require(path.join(__dirname, "..", "..", "..", "src", "helpers", "util"));
+const util = require(path.join(__dirname, "..", "..", "..", "helpers", "util"));
 
 chai.should();
 chai.use(sinonChai);
 
 let sandbox = sinon.sandbox.create();
 
-let Media = require(path.join(__dirname, "..", "..", "..", "src", "models", "media"));
+let Media = require(path.join(__dirname, "..", "..", "..", "models", "media"));
 
 
 describe("Media model", function () {
