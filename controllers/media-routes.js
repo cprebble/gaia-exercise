@@ -103,6 +103,9 @@ const longestPreviewMediaUrl = (req, res, next) => {
 		})
 		.then((bchlsData) => {
 		 	lastModified = _lastestLastModified(lastModified, bchlsData.lastModified);
+			if (!bchlsData.data) {
+				throw {status: 404, message: "bcHLS data not found."};
+			}
 			let rtnobj = {
 				bcHLS: bchlsData.data,
 				titleNid: titleNid,
