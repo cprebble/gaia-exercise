@@ -4,7 +4,7 @@ A NodeJS project that exposes a RESTful endpoint that returns preview video data
 
 ## Solution Description
 
-How to run this solution: (given Git, NodeJS, NPM, Gulp, Docker are installed)
+How to run this solution locally: (given Git, NodeJS, NPM, Gulp, Docker are installed)
 
 + git clone https://github.com/cprebble/gaia-exercise.git
 + run ```npm install```
@@ -16,16 +16,16 @@ To make a Docker image:
 + docker build -t gaia-service:1.0.0 . 
 
 To run a Docker container:
-+ docker run -d -p 3000:3000 -e "NODE_ENV=production" gaia-service:1.0.0
++ docker run -d -p 3000:3000 gaia-service:1.0.0
 + in a browser navigate to http://127.0.0.1:3000/terms/26681/longest-preview-media-url
 
 To run the Docker container with specific environment variables, like logLevel: ```docker run -d -p 3000:3000 -e "NODE_ENV=production" -e "logLevel=debug" gaia-service:1.0.0```
 
 #### Config
-Configuration uses nconf which will look first in arguments, then environment variables, then in config/common.env. The backend urls are defined in common.env. They can be changed by adding an environment variable: ```export mediaUrl=http://d6api.gaia.com/giant-posters/{gpid}``` or by providing a process arg. e.g. ```vocabularyUrl=http://d6api.gaia.com/vocabulary/42/{tid} node server.js```
+Configuration uses nconf (https://github.com/indexzero/nconf) which will look first in arguments, then environment variables, then in config/common.env. The backend urls are defined in common.env. They can be changed by adding an environment variable: ```export mediaUrl=http://d6api.gaia.com/giant-posters/{gpid}``` or by providing a process argument: e.g. ```vocabularyUrl=http://d6api.gaia.com/vocabulary/42/{tid} node server.js```
 
 #### Logging
-Bunyan logger produces JSON, and has plugins for streaming to ElasticSearch, Syslog, etc. The default stream is stdout but I've also implemented a rotatingFile stream. Change streams by changing your environment variable: ```export loggerStreams=rotatingFile``` or by providing a process arg: ```loggerStreams=stdout,rotatingFile node server.js``` Bunyan writes to both streams in the comma separated example.
+Bunyan logger (https://github.com/trentm/node-bunyan) produces JSON, and has plugins for streaming to ElasticSearch, Syslog, etc. The default stream is stdout but I've also implemented a rotatingFile stream. Change streams by changing your environment variable: ```export loggerStreams=rotatingFile``` or by providing a process argument: ```loggerStreams=stdout,rotatingFile node server.js``` Bunyan writes to both streams in this comma separated example.
 
 Log level default is ```info```, and can be modified: ```logLevel=debug node server.js```
 
@@ -37,11 +37,9 @@ I prefer to keep tests separate from source code; the easier to deploy to produc
 I did not take the time at this time to test to 100% coverage. I hope this sampling suffices to demonstrate my abilities.
 
 #### My Comments
-I structured the code with readability, testability and maintainability in mind. Even though this is an exercise, the purpose of exposing an endpoint indicates a web service and the potentiality of exposing more endpoints in this service. Those new endpoints could be added to the existing controller or exposed in new controllers. More data points, i.e. endpoints, would help expose the service abstraction and criteria for best responsibility and encapsulation. Refactoring is a constant activity.
+I structured the code with readability, testability and maintainability in mind. Even though this is an exercise, I've made some guesses about how this service might grow which impacted my decisions about what constitutes over-architecting vs creating enough structure to make it readable and extensible. The purpose here of exposing an endpoint indicates a web service and the potentiality of exposing more endpoints in this service. Those new endpoints could be added to the existing controller or exposed in new controllers. More data points, i.e. endpoints, would help expose the service abstraction and criteria for best responsibility and encapsulation. Refactoring is a constant activity.
 
-I separated out into their own classes vocabulary, videos and media to encapsulate access to the different object structures returned from the Gaia backend endpoints. Please note my ignorance of the organization of Gaia backend content. 
-
-I've made some guesses about how this service might grow which impacted my decisions about what constitutes over-architecting vs creating enough structure to make it readable and extensible.
+I separated out into their own classes vocabulary, videos and media to encapsulate access to the different object structures returned from the Gaia backend endpoints. Please note my ignorance of the organization of Gaia backend content.
 
 No authentication nor authorizations are included in this project. Except that offered by Github.
 
@@ -49,7 +47,7 @@ I took the opportunity to update the testing tools I use (I was using Mocha with
 
 My past experience with linting has been less than useful. Eslint-plugin-promise was helpful in this exercise. I turned on eslint-config-standard and got over 4000 messages about spaces around my braces, extra semi-colons and blank lines. I took it out. The saga of 'just right' syntax continues. I leave it for another day.
 
-Clustering and auto-restarts are best handled by a container host, like Swarm or ECS, rather than inside the container.
+In my opinion, clustering and auto-restarts are best handled by a container host, like Swarm or ECS, rather than inside the container.
 
 I'm developing on a 13 inch MacBook Pro, v10.11.6. Docker v1.12.6 (v17.03.1-ce seems to have network bridge issues). Visual Studio Code.
 
